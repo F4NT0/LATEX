@@ -1,0 +1,4 @@
+putStr("Nome do Arquivo: " ++ nome ++ "\n"     )
+putStr("Linha no Arquivo: " ++ linha ++ "\n"   )
+return (nome)
+return (linha)

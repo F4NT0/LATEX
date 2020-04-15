@@ -1,0 +1,252 @@
+%% LyX 2.2.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,brazil,a4paper]{article}
+%\usepackage{sbc-template}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{minted}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+%\usepackage[linesnumbered,ruled,vlined,portuguese]{algorithm2e}
+\input{algo}
+\RequirePackage{times}
+\makeatletter
+
+\newenvironment{code}
+{\par\begin{list}{}{
+\setlength{\rightmargin}{\leftmargin}
+\setlength{\listparindent}{0pt}% needed for AMS classes
+\raggedright
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\normalfont\ttfamily}%
+ \item[]}
+{\end{list}}
+
+\setlength{\jot}{0.25\jot}
+\usepackage{latexsym}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{Investigação de Linguagens de Programação: Haskell}
+
+\author{Larissa Salerno, Gabriel Fanto Stundner\\
+Escola Politécnica — PUCRS}
+
+\maketitle
+
+
+\section{Introdução}
+
+Linguagens funcionais são linguagens que trabalham puramente com o uso de funções. Diferente de linguagens com outros paradigmas, linguagens funcionais trabalham com funções matemáticas e não com o uso de estados. Nessa atividade vamos apresentar um estudo feito em cima da linguagem Haskell.
+
+A seção 2 fala um pouco sobre o paradigma funcional, que é essencial para entendermos o conceito de Haskell. A seção 3 é dedicada a explicação do Haskell, incluindo aspectos históricos, característcas, e depois artefatos mais técnicos como notação e implementação. Nessa mesma seção apresentamos a implementação de 2 algoritmos, um de fatorial e  outro de leitura de arquivos, o qual iremos explicar minuciosamente sua construção.
+
+\section{Programação Funcional}
+
+Antes de falar sobre Haskell é importante entendermos o que veio antes do surgimento da linguagem. A programação funcional é um paradigma de programação que utiliza funções matemáticas, ou seja, evitam ao máximo trabalhar com estados e dados imutáveis. Diferente do paradigma imperativo, na programação funcional valores atribuídos a variáveis não podem ser alterados, quando no paradigma imperativo é realizado uma sequência de passos alterando estados e modificando variáveis. A seguir, será apresentado um exemplo de implementação de uma função para realizar uma soma, mostrando a diferença entre o paradigma imperativo e funcional. \newline
+
+\textbf{Imperativo:}
+
+\begin{minted}[fontsize=\footnotesize]{python}
+v1 = 5
+v2 = 3
+
+def soma():
+    return v1 + v2
+\end{minted}
+
+\textbf{Funcional:}
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+def soma(v1, v2):   
+    return v1 + v2
+\end{minted}
+
+Como podemos ver, o primeiro algoritmo é imperativo, então declara as variáveis e retorna elas diretamente, sem que seja necessário passá-las por parâmetro. Já na segunda implementação funcional, a função \textbf{soma()} já espera o valor das variáveis por parâmetro. Isso mostra que no paradigma funcional não é necessário criar uma sequência de passos, como foi mostrado na primeira implementação. O paradigma funcional trabalha em cima da execução de funções. Isso também acaba as tornando mais simples e fáceis de visualizar.
+
+
+\section{Haskell}
+
+Haskell (nomeada em homenagem ao lógico Haskell Curry) é uma linguagem funcional criada em 1987 por um comitê de acadêmicos que sentiram a necessidade de criar uma linguagem que pudesse ser usada tanto para pesquisa, quanto para o ensino de programação funcional. A linguagem levou cerca de 10 anos para finalmente ser publicada com uma versão estável, conhecida como Haskell 98. No ano de 2003 tiveram algumas atualizações, e suas últimas modificações foram feitas em 2010. Diferente do que estamos acostumados a programar, a programação em Haskell é muito mais rápida e consome um número menor de linhas, já que ao invés de digitar uma sequência de passos, o programador apenas declara o que ele quer que aconteça no programa. A seguir, vão ser apresentadas as características da linguagem e a implementação de 2 algoritmos, um de fatorial e outro de leitura de arquivos.\\
+
+\subsection{Características}
+
+Haskell possui diversas características, sendo elas:
+
+\begin{itemize}
+    \item \textbf{Lazy:} o conceito \textit{lazy} significa que a linguagem não calcula e executa funções a não ser que seja realmente explícito no código.
+    \item \textbf{Estática:} quer dizer que quando uma variável for declarada, ela não poderá sofrer alterações depois. \textbf{Ex:} Se uma variável \textit{int} for declarada, a mesma não pode receber um valor \textit{string} depois.
+    \item \textbf{Alto nível:} Haskell é uma linguagem alto nível, ou seja, é muito mais "limpa" e fácil de entender, já que não precisa se preocupar com questões internas de processamento como, por exemplo, ponteiros em C.
+    \item \textbf{Laços de repetição:} A linguagem não trabalha com laços como o \textit{\textbf{for}}, por exemplo. A maneira que ela encontra de expressar esses laços é a partir de recursão.
+    \item \textbf{Listas:} A utilização de listas é muito comum e quase primordial na programação em Haskell. A linguagem usa isso como uma forma de semelhar conjuntos matemáticos.
+    \item \textbf{Imutabilidade:} Não pode haver mudança nas variáveis, uma vez que a variável recebe um valor, essa jamais poderá ser alterada.
+    \item \textbf{Funções de alta-ordem:} Haskell pode receber funções como parâmetros de funções
+    \item \textbf{Polimorfismo:} A linguagem permite criar funções genéricas, então essas podem ser usadas para variáveis de diversos tipos diferentes.
+\end{itemize}
+
+\subsection{Implementação}
+
+Nessa subseção vamos explicar aspectos de notação e vamos apresentar e explicar dois algoritmos em Haskell, um de Fatorial e outro de Leitura de arquivos.
+
+\subsubsection{Notação em Haskell:}
+
+\textbf{Comentários:} Para fazermos um comentário em Haskell devemos usar dois traços seguidos, como representado abaixo:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+-- Comentário de uma linha
+
+--
+-- Comentário de múltiplas linhas
+-- neste aquivo
+-- pode se colocar em cada linha um novo --
+\end{minted}
+
+\textbf{Definindo o tipo de uma variável:} Usamos a notação :: para definir variáveis, como no exemplo abaixo:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+-- nomeVariavel::tipo
+idade::Int
+booleano::Bool
+\end{minted}
+
+\textbf{Funções:} Quando estamos trabalhando com uma Função em Haskell devemos dizer o tipo de entrada e o tipo de saída antes de elaborar a função. No exemplo abaixo, queremos pegar um valor inteiro(\textit{Int}) e retornar um valor inteiro também, onde isso tem que ser definido antes de implementar o que a função faz.
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+-- Função que retorna o Quadrado do Valor
+quadrado::Int -> Int
+quadrado x = x * x
+\end{minted}
+
+\textbf{Testando uma função:} Para testar a função chamamos um teste criando um \textit{main}:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+maint = print (quadrado 2)
+-- Saida: 4
+\end{minted}
+
+\textbf{Utilização de \textit{Guards}}: \textit{Guards} são expressões booleanas que são iniciadas pelo símbolo "$\mid$", onde são opções que a função irá verificar por um teste booleano. Caso nenhuma das expressões seja \textit{true}, deve ser elaborado o \textit{otherwise} que sempre é chamado quando todos os outros falham, exemplo:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+-- Verificação se o valor inicial é o menor
+menor:: Int -> Int -> Int
+menor a b 
+    | a <= b    = a
+    | otherwise = b
+\end{minted}
+
+\subsubsection{Algoritmo Fatorial}
+
+Para explicar como funcionam recursões em Haskell, criamos um programa simples que faz o fatorial de um número.
+
+
+A primeira coisa que devemos fazer é definir o
+caso base da função, que no caso de um fatorial é
+quando o fatorial de 0 é igual a 1. Para definir
+esse valor contante devemos chamar primeiro o
+nome da função e o valor base, que no nosso caso
+é 0, e depois colocamos o símbolo de igualdade
+para dizermos que quando chegar nesse caso o
+valor que será transmitido é 1.
+
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+fatorial 0 = 1
+\end{minted}
+
+Depois de definirmos o valor base de um fatorial, devemos implementar como a função funciona, adicionando toda a estrutura recursiva que iremos precisar. A função do fatorial necessita de um valor de entrada, que pode ser qualquer um, então iremos definir esse argumento que irá receber um valor da compilação como "n". Depois de definirmos o argumento, temos que construir o esqueleto do que nossa função deve fazer, onde nesse caso é multiplicar o valor de entrada com a chamada da função novamente, onde definimos o que deve fazer a função fatorial com seu número anterior.
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+fatorial n = n * fatorial(n-1)
+\end{minted}
+
+Com essa estrutura, não importa o número colocado para rodar o fatorial, a função vai ser chamada até que o valor de entrada seja 0 e resolver todos os outros de forma crescente. 
+
+No vídeo, mostramos a criação de uma estrutura \textit{main} que irá ter um caso de exemplo, onde queremos que o Haskell resolva o fatorial de 5 e nos entregue impresso no terminal, onde utilizamos uma função básica do Haskell chamada \textit{Print}.
+
+\subsubsection{Algoritmo Leitura de Arquivos}
+
+Neste algoritmo quisemos explicar como funciona a utilização de funções já existentes no sistema Haskell, onde não precisamos criar funções se já existem outras que possam nos auxiliar. Para demonstrar a diferença de linguagens Imperativas e Orientadas a Objetos criamos um algoritmo que lê e escreve em um arquivo criado. As funções que utilizamos para construir o algoritmo possuem operações utilizando uma estrutura do Haskell chamada \textbf{IO}. \newline
+
+\textbf{Estrutura IO:}\newline
+
+A estrutura IO se comunica com o sistema operacional e possui funções específicas para tratar a entrada definida, as funções que utilizamos para criar, escrever, e ler possuem essa estrutura. Abaixo encontra-se a lista de funções usadas nesse programa e seus escopos:
+
+\begin{itemize}
+    \item \textbf{putStr}:: String -> IO()
+    \item \textbf{getLine}:: IO String
+    \item \textbf{writeFile}:: String -> String -> IO()
+    \item \textbf{readFile}:: String -> IO String
+    \item \textbf{return}:: a -> IO a 
+\end{itemize}
+
+Essas funções possuem sua própria estrutura, então não precisamos construí-las, apenas usá-las. A Função \textbf{putStr} requer uma \textit{String} que deve ser colocada dentro dos (), por isso o IO(). Depois ele irá imprimir na tela, onde a \textit{String} colocada dentro dos () vai ser uma pergunta que o usuário deve responder e depois clicar no ENTER para finalizar a entrada.
+
+A função \textbf{getLine} pega a entrada inserida pelo usuário depois da função \textbf{putStr}, onde a função \textbf{getLine} espera que a entrada seja uma \textit{String}, por isso o IO \textit{String} mostrado no escopo. A função deve enviar essa \textit{String} para um atributo criado somente na hora de compilação, como mostraremos mais tarde.
+
+A função \textbf{writeFile} serve para enviarmos uma linha de texto para dentro de um arquivo, o qual a função necessita de duas \textit{Strings} para funcionar. A utilização de () é opcional, mas se desejar pode ser colocado. A primeira \textit{String} de entrada deve ser o nome do arquivo desejado e a segunda \textit{String} é todo o texto que deseja colocar no arquivo.
+
+ A função \textbf{readFile} serve para ler um arquivo, onde ela precisa receber como argumento a \textit{String} do nome do arquivo que se deseja ler, assim como funciona o \textbf{ getLine}, então ela pega o nome do arquivo e transmite para um atributo de momento toda a informação escrita no arquivo. Já a função \textbf{return} é utilizada para retornar qualquer valor ara o usuário, somente é necessário informar ao \textit{return} o que deve ser retornado. \newpage
+ 
+ \textbf{Explicação do algoritmo:} \newline
+ 
+ Uma sequência de entradas e saídas de dados em Haskell deve-se colocar a expressão "\textit{do}" dentro da estrutura \textit{main} quando quiser utilizar as funções mostradas anteriormente. As funções mostradas anteriormente já estão definidas no Haskell, então devemos nos preocupar principalmente em utilizar essas funções diretamente no \textit{main} do nosso programa, que deve ser inicializada assim:
+ 
+\begin{minted}[fontsize=\footnotesize]{haskell}
+main = do
+\end{minted}
+
+Agora podemos utilizar todas as funções dentro dessa estrutura, onde a primeira etapa é pegar o nome do arquivo que desejamos construir e a informação que queremos colocar na linha, o qual no nosso exemplo somente coloca uma linha no arquivo e o finaliza. Se for tentarmos utilizar de novo ele irá apagar a linha já existente e reescrever com a nova informação chamada.
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+putStr("Escreva o nome do Arquivo: ")
+ nome <- getLine
+ putStr("Escreva uma linha de texto: ")
+ linha <- getLine
+\end{minted}
+
+Utilizamos a função \textbf{getLine}, que envia a entrada do usuário no \textbf{putStr}, onde o primeiro pega o nome do arquivo e salva em um atributo momentâneo chamado nome, e o segundo pega a linha de \textit{text} e salva no atributo momentâneo chamado linha. Agora que temos o nome do arquivo e a linha de texto, somente passamos os atributos para a função, da seguinte forma:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+writeFile nome linha
+\end{minted}
+
+Se desejamos ler do arquivo e salvar em um atributo, podemos usar a função \textbf{readFile} como já dito anteriormente, e isso fica assim:
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+lendoArquivo <- readFile nome
+\end{minted}
+
+Passamos o nome do arquivo para a função \textbf{readFile} e salvamos o conteúdo de saída da função em um atributo momentâneo, e depois podemos chamar o atributo externamente de duas formas: ou utilizando o \textbf{putStr} ou usando \textbf{return}. No exemplo que fizemos foi pelo \textbf{putStr}, mas colocamos comentado da mesma maneira qe utiliza-se o \textbf{return} para retornar o nome do arquivo.
+
+\begin{minted}[fontsize=\footnotesize]{haskell}
+putStr("Nome do Arquivo: " ++ nome ++ "\n"     )
+putStr("Linha no Arquivo: " ++ linha ++ "\n"   )
+return (nome)
+return (linha)
+\end{minted}
+
+\begin{thebibliography}{1}
+
+\bibitem{1}Hudak, P. and Fasel, J.: \textbf{"A gentle introduction to Haskell."}, ACM Sigplan Notices, 1992.
+
+\bibitem{2}Hutton, G.:\textbf{``Programming in Haskell''} (2nd Edition). Cambridge University Press, 2016.
+
+\bibitem{3}HaskellWiki: \url{https://wiki.haskell.org/Haskell}, 2013.
+
+\bibitem{4}Mueller, J.: \textbf{"Functional Programming for Dummies} (1st Edition), John Wiley and Sons, 2019.
+
+\bibitem{5}Sebesta, R.: \textbf{"Concepts of Programming Languages"} (11th Edition), Pearson, 2015.
+
+\bibitem{6}Lipovača, M. \textbf{"Learn You a Haskell for Great Good!: A Beginner's Guide"} (1st Edition), No Starch Press, 2011.
+\end{thebibliography}
+
+
+\end{document}
